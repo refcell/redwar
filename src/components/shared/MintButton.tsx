@@ -5,7 +5,7 @@ import {
 
 const MintButton = ({
     className,
-    link = "https://github.com/abigger87/redwar",
+    link = "https://github.com/abigger87/nextjs-chakra-dapp",
     ...props
   }) => {
   return (

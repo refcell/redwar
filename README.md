@@ -1,9 +1,9 @@
-<h1 align="center">🏰 Redwar ⚔️</h1>
+<h1 align="center">🏰 RedWar ⚔️</h1>
 
 <p align="center">An NFT turn-based multiplayer wargame expanding the metaverse to Redwall!</p>
 <p align="center">Also a <a href="https://buildspace.so">Buildspace</a> NFT Game Alkes Cohort Project.</p>
 
-<p align="center">🚨​ Redwar NFTs are not deployed on Mainnet 🚨​</p>
+<p align="center">🚨​ RedWar NFTs are not deployed on Mainnet 🚨​</p>
 <p align="center">🚨​ Only deployed on Rinkeby Test network 🚨​</p>
 
 ## Contracts
@@ -53,7 +53,6 @@ npx hardhat run scripts/deploy.js --network rinkeby
 
 [Free Animated SVGs](https://getloaf.io/)
 
-
 ## Website
 
 ### **Getting Started 👋**
@@ -65,15 +64,14 @@ To run the website:
 3. Start coding!
 
 ### What is the `.vscode` Folder?
-If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
 
+If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
 
 ### **Questions?**
 
 Shoot me a message on twitter [@andreasbigger](https://twitter.com/andreasbigger) or feel free to open up an issue on this repo with your question!
 
 For questions about the Buildspace course, visit the [buildspace Dashboard](https://app.buildspace.so/courses/CO5cc2751b-e878-41c4-99fa-a614dc910ee9) and link your Discord account so you can get access to helpful channels teaching assistants, and an instructor!
-
 
 ## Credits
 

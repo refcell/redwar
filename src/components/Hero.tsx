@@ -1,6 +1,6 @@
 import { Flex, Heading } from '@chakra-ui/react'
 
-const Hero = ({ title = 'Redwar' }: { title: string }) => (
+const Hero = ({ title = 'RedWar' }: { title: string }) => (
   <Flex
     justifyContent="center"
     alignItems="center"
