@@ -1,5 +1,7 @@
 const main = async () => {
   const gameContractFactory = await hre.ethers.getContractFactory('MyEpicGame');
+  // ** Creates a local network and deploys the contract
+  // ** This network will be destroyed when this script is done executing
   const gameContract = await gameContractFactory.deploy(
     // Names
     [
@@ -60,7 +62,12 @@ const main = async () => {
       55,
       170,
       120,
-    ]
+    ],
+    "Slager The Cruel", // Boss name
+    "https://i.ibb.co/6BK1jHL/Slager-The-Cruel.jpg", // Boss image
+    // Boss imgbb link: https://ibb.co/TLQb94d
+    2000, // Boss hp
+    75 // Boss attack damage
   );
   await gameContract.deployed();
   console.log("Contract deployed to:", gameContract.address);
@@ -76,6 +83,11 @@ const main = async () => {
   let returnedTokenUri = await gameContract.tokenURI(1);
   console.log("Token URI:", returnedTokenUri);
 
+  // let's test attacking the boss!
+  txn = await gameContract.attackBoss();
+  await txn.wait();
+  txn = await gameContract.attackBoss();
+  await txn.wait();
 };
 
 const runMain = async () => {

@@ -64,7 +64,12 @@ const main = async () => {
       55,
       170,
       120,
-    ]
+    ],
+    "Slager The Cruel", // Boss name
+    "https://i.ibb.co/6BK1jHL/Slager-The-Cruel.jpg", // Boss image
+    // Boss imgbb link: https://ibb.co/TLQb94d
+    2000, // Boss hp
+    75 // Boss attack damage
   );
 
   // ** Wait until the contract is deployed on the network
@@ -93,6 +98,26 @@ const main = async () => {
   tx = await nftContract.mintCharacterNFT(3);
   await tx.wait();
   console.log("Minted NFT #4");
+
+  // ** Mint another one
+  tx = await nftContract.mintCharacterNFT(4);
+  await tx.wait();
+  console.log("Minted NFT #5");
+
+  // ** Mint another one
+  tx = await nftContract.mintCharacterNFT(5);
+  await tx.wait();
+  console.log("Minted NFT #6");
+
+  // ** Mint another one
+  tx = await nftContract.mintCharacterNFT(6);
+  await tx.wait();
+  console.log("Minted NFT #7");
+
+  // ** Mint another one
+  tx = await nftContract.mintCharacterNFT(7);
+  await tx.wait();
+  console.log("Minted NFT #8");
 };
 
 const exec = async () => {
