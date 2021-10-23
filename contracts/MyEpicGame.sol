@@ -11,6 +11,9 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "hardhat/console.sol";
 
+// Helper we wrote to encode in Base64
+import "./libraries/Base64.sol";
+
 // Our contract inherits from ERC721, which is the standard NFT contract!
 contract MyEpicGame is ERC721 {
     struct CharacterAttributes {
@@ -45,7 +48,7 @@ contract MyEpicGame is ERC721 {
         // Below, you can also see I added some special identifier symbols for our NFT.
         // This is the name and symbol for our token, ex Ethereum and ETH. I just call mine
         // Heroes and HERO. Remember, an NFT is just a token!
-        ERC721("Heroes", "HERO")
+        ERC721("Redwood", "WOOD")
     {
         for (uint256 i = 0; i < characterNames.length; i += 1) {
             defaultCharacters.push(
@@ -104,5 +107,50 @@ contract MyEpicGame is ERC721 {
 
         // Increment the tokenId for the next person that uses it.
         _tokenIds.increment();
+    }
+
+    function tokenURI(uint256 _tokenId)
+        public
+        view
+        override
+        returns (string memory)
+    {
+        CharacterAttributes memory charAttributes = nftHolderAttributes[
+            _tokenId
+        ];
+
+        string memory strHp = Strings.toString(charAttributes.hp);
+        string memory strMaxHp = Strings.toString(charAttributes.maxHp);
+        string memory strAttackDamage = Strings.toString(
+            charAttributes.attackDamage
+        );
+
+        string memory json = Base64.encode(
+            bytes(
+                string(
+                    abi.encodePacked(
+                        '{"name": "',
+                        charAttributes.name,
+                        " -- NFT #: ",
+                        Strings.toString(_tokenId),
+                        '", "description": "Welcome to the Redwood Metaverse", "image": "',
+                        charAttributes.imageURI,
+                        '", "attributes": [ { "trait_type": "Health Points", "value": ',
+                        strHp,
+                        ', "max_value":',
+                        strMaxHp,
+                        '}, { "trait_type": "Attack Damage", "value": ',
+                        strAttackDamage,
+                        "} ]}"
+                    )
+                )
+            )
+        );
+
+        string memory output = string(
+            abi.encodePacked("data:application/json;base64,", json)
+        );
+
+        return output;
     }
 }
