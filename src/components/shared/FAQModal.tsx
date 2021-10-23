@@ -21,7 +21,6 @@ import {
 } from "@chakra-ui/react";
 import { ExternalLinkIcon, CloseIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
-
 import { NascentBadge } from ".";
 
 const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
@@ -30,10 +29,10 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
     <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"}>
       <ModalOverlay />
       <ModalContent maxWidth={"800px"}>
-        <ModalHeader>{t("FAQ")}</ModalHeader>
+        <ModalHeader fontSize="4xl" mt={4}>{t("FAQ")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody width={"auto"}>
-          <Flex direction="column" my="1em">
+          <Flex direction="column" mb="1em">
             <Heading mb="0.5em" as="h4" size="md">
               {t("What is RedWar?")}
             </Heading>
@@ -85,16 +84,70 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
             <OrderedList pl="1em" maxWidth="calc(100% - 1em)">
               <ListItem>
                 {t("Connect to the Rinbkeby Test Network (Chain ID) with Metamask.")}
-                <ListItem>
-                  {t("Connect to the Rinbkeby Test Network (Chain ID) with Metamask.")}
-                </ListItem>
+                <UnorderedList pl="1em">
+                  <ListItem>
+                    <Stack direction="row">
+                      <Text>Install </Text>
+                      <ChakraLink
+                        display="flex"
+                        mr="0.2em"
+                        color="orange.400"
+                        isExternal
+                        href="https://metamask.io/"
+                      >
+                        Metamask
+                        <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                          <ExternalLinkIcon />
+                        </span>
+                      </ChakraLink>
+                    </Stack>
+                  </ListItem>
+                  <ListItem>
+                    <Stack direction="row">
+                      <Text>Connect to </Text>
+                      <ChakraLink
+                        display="flex"
+                        mr="0.2em"
+                        color="yellow.400"
+                        isExternal
+                        href="https://chainlist.org/"
+                      >
+                        Rinkeby
+                        <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                          <ExternalLinkIcon />
+                        </span>
+                      </ChakraLink>
+                      <Text>(Chain ID 4)</Text>
+                    </Stack>
+                  </ListItem>
+                  <ListItem>
+                    <Stack direction="row">
+                      <Text>Get some Rinkeby test Ether at a </Text>
+                      <ChakraLink
+                        display="flex"
+                        mr="0.2em"
+                        color="green.400"
+                        isExternal
+                        href="https://faucet.rinkeby.io/"
+                      >
+                        Faucet
+                        <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
+                          <ExternalLinkIcon />
+                        </span>
+                      </ChakraLink>
+                    </Stack>
+                  </ListItem>
+                </UnorderedList>
               </ListItem>
               <ListItem>
-                {t(
-                  "You can relieve your styling worries using the many Chakra prebuilt components!"
-                )}
+                {t("Launch the RedWar app, and connect your Metamask wallet!")}
               </ListItem>
-              <ListItem>{t("You can quickly deploy on Vercel for extremely rapid development.")}</ListItem>
+              <ListItem>
+                {t("Then, Choose your hero.")}
+              </ListItem>
+              <ListItem>
+                {t("Finally, defeat Slager The Cruel - Good luck, anon!")}
+              </ListItem>
             </OrderedList>
           </Flex>
 
@@ -105,12 +158,13 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
             <List pl="1em" maxWidth="calc(100% - 1em)">
               <ListItem>
                 <ListIcon as={CloseIcon} color="red.500" />
-                {t("Promise any financial value. These NFTs are purely for enabling gameplay and should not be considered any form of investment.")}
+                {t("Promise any financial value. These NFTs are purely for gameplay and should not be considered any form of investment.")}
+              </ListItem>
+              <ListItem>
+                <ListIcon as={CloseIcon} color="red.500" />
+                {t("Guarantee the app is bug-free: remember, this was hacked together in one sitting!")}
               </ListItem>
             </List>
-            <Text>{t("")}</Text>
-            <Text>{t("Not guaranteed to be bug free! This was basically hacked together in one sitting!")}</Text>
-            <Text>{t("Provide the contract SDK to integrate into the Dapp. This must be done yourself in the src/web3context-sdk directory.")}</Text>
           </Flex>
 
           <Flex direction="column" my="1em">
@@ -145,7 +199,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
             <Stack direction="row">
               <Text>
                 {t(
-                  "Reach out to on Twitter (links above) or create an issue on the"
+                  "Reach out to on Twitter (links above) or create an issue on"
                 )}
               </Text>
               <Stack
@@ -159,7 +213,7 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                   isExternal
                   href="https://github.com/abigger87/redwar"
                 >
-                  GitHub Repo
+                  GitHub
                   <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
                     <ExternalLinkIcon />
                   </span>
