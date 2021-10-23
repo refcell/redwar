@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Buildspace NFT Game Alkes Cohort - Create your own mini turn-based NFT browser game",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/abigger87/epic-game.git"
@@ -17,16 +14,47 @@
     "url": "https://github.com/abigger87/epic-game/issues"
   },
   "homepage": "https://github.com/abigger87/epic-game#readme",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.2",
+    "dotenv": "^10.0.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "ethers": "^5.4.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "chai": "^4.3.4",
     "ethereum-waffle": "^3.4.0",
-    "ethers": "^5.4.7",
     "hardhat": "^2.6.4"
   },
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.3.2",
-    "dotenv": "^10.0.0"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

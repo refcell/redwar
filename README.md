@@ -1,11 +1,9 @@
 <h1 align="center">Redwall</h1>
 
-<div align="center">
-```
-🚨​ Redwall NFTs are not deployed on Mainnet 🚨​
-🚨​ Only deployed on Rinkeby Test network 🚨​
-```
-</div>
+## Contracts
+
+<p align="center">🚨​ Redwall NFTs are not deployed on Mainnet 🚨​</p>
+<p align="center">🚨​ Only deployed on Rinkeby Test network 🚨​</p>
 
 Main contract is: `contracts/MyEpicGame.sol`
 
@@ -42,7 +40,7 @@ Run:
 npx hardhat run scripts/deploy.js --network rinkeby
 ```
 
-## Useful Tools:
+### Useful Tools:
 
 [JSON Keeper](https://jsonkeeper.com/)
 
@@ -51,6 +49,28 @@ npx hardhat run scripts/deploy.js --network rinkeby
 [Online SVG Viewer](https://www.svgviewer.dev/)
 
 [Free Animated SVGs](https://getloaf.io/)
+
+
+## Website
+
+### **Getting Started 👋**
+
+To run the website:
+
+1. Run `yarn` at the root of your directory
+2. Run `yarn dev` to start the project
+3. Start coding!
+
+### What is the `.vscode` Folder?
+If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
+
+
+### **Questions?**
+
+Shoot me a message on twitter [@andreasbigger](https://twitter.com/andreasbigger) or feel free to open up an issue on this repo with your question!
+
+For questions about the Buildspace course, visit the [buildspace Dashboard](https://app.buildspace.so/courses/CO5cc2751b-e878-41c4-99fa-a614dc910ee9) and link your Discord account so you can get access to helpful channels teaching assistants, and an instructor!
+
 
 ## Credits
 
