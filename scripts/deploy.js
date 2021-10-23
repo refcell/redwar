@@ -1,6 +1,10 @@
 const main = async () => {
-  const gameContractFactory = await hre.ethers.getContractFactory('MyEpicGame');
-  const gameContract = await gameContractFactory.deploy(
+  // ** Compiles contract and generates build under artifacts directory
+  const nftContractFactory = await hre.ethers.getContractFactory('MyEpicGame');
+
+  // ** Creates a local network and deploys the contract
+  // ** This network will be destroyed when this script is done executing
+  const nftContract = await nftContractFactory.deploy(
     // Names
     [
       "Matthias",
@@ -62,23 +66,36 @@ const main = async () => {
       120,
     ]
   );
-  await gameContract.deployed();
-  console.log("Contract deployed to:", gameContract.address);
 
-  let txn;
+  // ** Wait until the contract is deployed on the network
+  await nftContract.deployed();
 
-  // We only have three characters.
-  // an NFT w/ the character at index 2 of our array.
-  txn = await gameContract.mintCharacterNFT(2);
-  await txn.wait();
+  // ** Output the address of the newly deployed contract!
+  console.log("Contract deployed to:", nftContract.address);
 
-  // Get the value of the NFT's URI.
-  let returnedTokenUri = await gameContract.tokenURI(1);
-  console.log("Token URI:", returnedTokenUri);
+  // ** Call the mint function
+  let tx = await nftContract.mintCharacterNFT(0);
+  // ** Wait for mint to occur
+  await tx.wait();
+  console.log("Minted NFT #1");
 
+  // ** Mint another one
+  tx = await nftContract.mintCharacterNFT(1);
+  await tx.wait();
+  console.log("Minted NFT #2");
+
+  // ** Mint another one
+  tx = await nftContract.mintCharacterNFT(2);
+  await tx.wait();
+  console.log("Minted NFT #3");
+
+  // ** Mint another one
+  tx = await nftContract.mintCharacterNFT(3);
+  await tx.wait();
+  console.log("Minted NFT #4");
 };
 
-const runMain = async () => {
+const exec = async () => {
   try {
     await main();
     process.exit(0);
@@ -88,4 +105,4 @@ const runMain = async () => {
   }
 };
 
-runMain();
+exec();
