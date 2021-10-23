@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { PlaceBidFrame, NFTFrame, OpenBidsFrame, SelectHero } from ".";
@@ -34,19 +35,23 @@ const MarginEightPix = styled.div`
   margin: 2em auto auto auto;
 `;
 
-const AppPageMain = () => (
-  <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
-    <PageGroup>
-      <MarginEightPix>
-        <SelectRow>
-          <SelectHero />
-        </SelectRow>
-        {/* <OpenBidRow>
-          <OpenBidsFrame />
-        </OpenBidRow> */}
-      </MarginEightPix>
-    </PageGroup>
-  </Flex>
-);
+const AppPageMain = () => {
+  const [character, setCharacterNFT] = useState(null);
+
+  return (
+    <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
+      <PageGroup>
+        <MarginEightPix>
+          <SelectRow>
+            <SelectHero />
+          </SelectRow>
+          {/* <OpenBidRow>
+            <OpenBidsFrame />
+          </OpenBidRow> */}
+        </MarginEightPix>
+      </PageGroup>
+    </Flex>
+  )
+}
 
 export default AppPageMain;

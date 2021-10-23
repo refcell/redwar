@@ -5,7 +5,7 @@ import Big from "big.js";
 
 import { Cache } from ".";
 
-// var erc20Abi = require("." + "/abi/ERC20.json");
+var myEpicGameAbi = require("." + "/abi/MyEpicGame.json");
 
 class Web3ContextClass {
   // ** ------------------------------ **
@@ -17,6 +17,7 @@ class Web3ContextClass {
   cache: Cache;
   getEthUsdPriceBN: () => Big;
   someAsyncFunction: () => Promise<any>;
+  checkIfUserHasNFT: () => Promise<boolean>;
 
   // ** Class Statics **
   static Web3 = Web3;
@@ -35,6 +36,26 @@ class Web3ContextClass {
     this.cache = new Cache({ allTokens: 86400, ethUsdPrice: 300 });
 
     var self = this;
+
+    this.MyEpicGame = new this.web3.eth.Contract(
+      myEpicGameAbi,
+      process.env.DEPLOYED_RINKEBY_CONTRACT_ADDRESS
+    );
+
+    this.checkIfUserHasNFT = async () => {
+      let txn = await this.MyEpicGame.checkIfUserHasNFT();
+      if(txn.name) {
+        console.log("User has character NFT");
+        return {
+          name: txn.name,
+          imageURI: txn.imageURI,
+          hp: txn.hp.toNumber(),
+          maxHp: txn.maxHp.toNumber(),
+          attackDamage: txn.attackDamage.toNumber(),
+        };
+      }
+    }
+
 
     // ** --------------------- **
     // ** DEFINE FUNCTIONS HERE **
