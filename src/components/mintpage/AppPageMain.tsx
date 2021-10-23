@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { PlaceBidFrame, NFTFrame, OpenBidsFrame } from ".";
+import { PlaceBidFrame, NFTFrame, OpenBidsFrame, SelectHero } from ".";
 
 const PageGroup = styled.div`
   flex-grow: 1;
@@ -9,7 +9,7 @@ const PageGroup = styled.div`
   align-items: center;
 `;
 
-const BidRow = styled.div`
+const SelectRow = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -38,12 +38,10 @@ const AppPageMain = () => (
   <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
     <PageGroup>
       <MarginEightPix>
-        <p>insert stuff here...</p>
-        {/* <BidRow>
-          <PlaceBidFrame />
-          <NFTFrame />
-        </BidRow>
-        <OpenBidRow>
+        <SelectRow>
+          <SelectHero />
+        </SelectRow>
+        {/* <OpenBidRow>
           <OpenBidsFrame />
         </OpenBidRow> */}
       </MarginEightPix>
