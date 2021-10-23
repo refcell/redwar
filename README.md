@@ -1,9 +1,12 @@
-<h1 align="center">Redwall</h1>
+<h1 align="center">Redwar</h1>
+
+<p align="center">An NFT turn-based multiplayer wargame expanding the metaverse to Redwall!</p>
+<p align="center">Also a <a href="https://buildspace.so">Buildspace</a> NFT Game Alkes Cohort Project.</p>
+
+<p align="center">🚨​ Redwar NFTs are not deployed on Mainnet 🚨​</p>
+<p align="center">🚨​ Only deployed on Rinkeby Test network 🚨​</p>
 
 ## Contracts
-
-<p align="center">🚨​ Redwall NFTs are not deployed on Mainnet 🚨​</p>
-<p align="center">🚨​ Only deployed on Rinkeby Test network 🚨​</p>
 
 Main contract is: `contracts/MyEpicGame.sol`
 

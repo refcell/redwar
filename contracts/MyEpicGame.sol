@@ -65,7 +65,7 @@ contract MyEpicGame is ERC721 {
         // Below, you can also see I added some special identifier symbols for our NFT.
         // This is the name and symbol for our token, ex Ethereum and ETH. I just call mine
         // Heroes and HERO. Remember, an NFT is just a token!
-        ERC721("Redwall", "WALL")
+        ERC721("Redwar", "RWAR")
     {
       // Initialize the boss. Save it to our global "bigBoss" state variable.
       bigBoss = BigBoss({
