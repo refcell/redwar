@@ -5,7 +5,7 @@ import {
 
 const MintButton = ({
     className,
-    link = "https://github.com/abigger87/epic-game",
+    link = "https://github.com/abigger87/redwar",
     ...props
   }) => {
   return (

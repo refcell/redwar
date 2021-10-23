@@ -1,19 +1,19 @@
 {
-  "name": "epic-game",
+  "name": "redwar",
   "version": "1.0.0",
   "description": "Buildspace NFT Game Alkes Cohort - Create your own mini turn-based NFT browser game",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/abigger87/epic-game.git"
+    "url": "git+https://github.com/abigger87/redwar.git"
   },
   "keywords": [],
   "author": "Andreas Bigger <andreas@nascent.xyz>",
   "license": "The Unlicense",
   "bugs": {
-    "url": "https://github.com/abigger87/epic-game/issues"
+    "url": "https://github.com/abigger87/redwar/issues"
   },
-  "homepage": "https://github.com/abigger87/epic-game#readme",
+  "homepage": "https://github.com/abigger87/redwar#readme",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

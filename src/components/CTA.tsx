@@ -25,7 +25,7 @@ const CTA = () => (
         >
         <ChakraLink
           isExternal
-          href="https://github.com/abigger87/epic-game"
+          href="https://github.com/abigger87/redwar"
           flexGrow={0}
           mx={2}
         >
