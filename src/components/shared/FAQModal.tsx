@@ -16,8 +16,10 @@ import {
   Stack,
   Flex,
   Code,
+  List,
+  ListIcon
 } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { ExternalLinkIcon, CloseIcon } from "@chakra-ui/icons";
 import { useTranslation } from "react-i18next";
 
 import { NascentBadge } from ".";
@@ -83,6 +85,9 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
             <OrderedList pl="1em" maxWidth="calc(100% - 1em)">
               <ListItem>
                 {t("Connect to the Rinbkeby Test Network (Chain ID) with Metamask.")}
+                <ListItem>
+                  {t("Connect to the Rinbkeby Test Network (Chain ID) with Metamask.")}
+                </ListItem>
               </ListItem>
               <ListItem>
                 {t(
@@ -95,9 +100,15 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
 
           <Flex direction="column" my="1em">
             <Heading mb="0.5em" as="h4" size="md">
-              {t("What Can't Nextjs Chakra Dapp Do?")}
+              {t("What Can't RedWar Do?")}
             </Heading>
-            <Text>{t("We do not provide contracts. Basic Dapptools-generated contracts exists in the src/ directory.")}</Text>
+            <List pl="1em" maxWidth="calc(100% - 1em)">
+              <ListItem>
+                <ListIcon as={CloseIcon} color="red.500" />
+                {t("Promise any financial value. These NFTs are purely for enabling gameplay and should not be considered any form of investment.")}
+              </ListItem>
+            </List>
+            <Text>{t("")}</Text>
             <Text>{t("Not guaranteed to be bug free! This was basically hacked together in one sitting!")}</Text>
             <Text>{t("Provide the contract SDK to integrate into the Dapp. This must be done yourself in the src/web3context-sdk directory.")}</Text>
           </Flex>
@@ -124,33 +135,17 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                   <NascentBadge />
                 </Stack>
               </ListItem>
-              <ListItem>
-                <Stack direction="row">
-                  <ChakraLink
-                    display="flex"
-                    mr="0.2em"
-                    color="blue.400"
-                    isExternal
-                    href="https://github.com/permaetheus"
-                  >
-                    Permætheus
-                    <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
-                      <ExternalLinkIcon />
-                    </span>
-                  </ChakraLink>
-                </Stack>
-              </ListItem>
             </UnorderedList>
           </Flex>
 
           <Flex direction="column" my="1em">
             <Heading mb="0.5em" as="h4" size="md">
-              {t("How to reach out to the Nextjs Chakra Dapp builders?")}
+              {t("How to reach out?")}
             </Heading>
             <Stack direction="row">
               <Text>
                 {t(
-                  "Reach out to us on Twitter (links above) or create an issue on the"
+                  "Reach out to on Twitter (links above) or create an issue on the"
                 )}
               </Text>
               <Stack
@@ -162,9 +157,9 @@ const FAQModal = ({ isOpen = false, onClose = () => {} }) => {
                   display="flex"
                   color="purple.400"
                   isExternal
-                  href="https://github.com/abigger87/nextjs-chakra-dapp"
+                  href="https://github.com/abigger87/redwar"
                 >
-                  github
+                  GitHub Repo
                   <span style={{ margin: "auto", paddingLeft: "0.2em" }}>
                     <ExternalLinkIcon />
                   </span>

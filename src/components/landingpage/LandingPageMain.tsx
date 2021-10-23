@@ -84,7 +84,8 @@ const LandingPageMain = () => (
         <span style={{marginBottom: "20px"}}>🏰</span> RedWar ⚔️
       </LandingPageMainBlurb>
       <MinorHeading>
-        Leverage Nextjs and Chakra for your dapp.
+        Join the Red War!
+        A fight to defeat Slager The Cruel in the metaverse!
       </MinorHeading>
       <BigBreak />
       <TrippyArt />

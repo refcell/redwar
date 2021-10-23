@@ -15,14 +15,15 @@ const MainTrippyImage = styled.img`
 `;
 
 const MainShadowBackground = styled.div`
-  width: 215px;
-  height: 215px;
+  width: 180px;
+  height: 205px;
+  border-radius: 50px 50px 180px 180px;
   flex-grow: 0;
   margin: auto;
   transform: rotate(13deg);
   -webkit-filter: blur(25px);
   filter: blur(25px);
-  background-color: #d42bd2;
+  background-color: #EB212E;
   grid-column-start: 1;
   grid-row-start: 1;
 `;
@@ -32,7 +33,7 @@ const TrippyArt = () => {
     <Flex w="100%">
       <Flex m="auto" w="auto" d="grid">
         <MainShadowBackground />
-        <MainTrippyImage src="/logo.png" alt="Main Art Piece" />
+        <MainTrippyImage src="/redwar.png" alt="Main Art Piece" />
       </Flex>
     </Flex>
   );
