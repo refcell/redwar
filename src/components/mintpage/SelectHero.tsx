@@ -21,7 +21,7 @@ const SelectHeroContainer = styled.div`
 
 const SelectHero = ({ setCharacterNFT }) => {
   const { t } = useTranslation();
-  const { isAuthed, balance } = useWeb3Context();
+  const { isAuthed, balance, web3Context, address, chainId } = useWeb3Context();
   const [validParams, setValidParams] = useState(false);
   const [placingBid, setPlacingBid] = useState(false);
 
@@ -143,6 +143,22 @@ const SelectHero = ({ setCharacterNFT }) => {
     validateParams(bidPrice, bidQty);
   }, [bidPrice, bidQty]);
 
+
+  // ** Check if user has an NFT on param change **
+  useEffect(() => {
+    console.log(web3Context)
+    const fetchNFTMetadata = async () => {
+      console.log('Checking for Character NFT on address:', address);
+      const character = await web3Context.checkIfUserHasNFT();
+      console.log("Got character:", character)
+      setCharacterNFT(character)
+    };
+
+    if (isAuthed) {
+      console.log('address:', address);
+      fetchNFTMetadata();
+    }
+  }, [address, chainId]);
 
   return (
     <SelectHeroContainer>
