@@ -3,6 +3,7 @@ import Head from "next/head";
 import theme from '../theme'
 import { AppProps } from 'next/app'
 import 'material-react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { Web3ContextProvider } from "src/contexts/Web3Context";
 
 import LogRocket from "logrocket";

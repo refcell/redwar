@@ -5,19 +5,35 @@ import Big from "big.js";
 
 import { Cache } from ".";
 
-var myEpicGameAbi = require("." + "/abi/MyEpicGame.json");
+var redwarAbi = require("." + "/abi/Redwar.json");
 
 class Web3ContextClass {
-  // ** ------------------------------ **
-  // ** TYPE YOUR STATE VARIABLES HERE **
-  // ** ------------------------------ **
-
   // ** Types **
   web3: Web3;
   cache: Cache;
-  getEthUsdPriceBN: () => Big;
-  someAsyncFunction: () => Promise<any>;
-  checkIfUserHasNFT: () => Promise<boolean>;
+  RedwarContractAddress: string;
+  Redwar: any;
+  checkIfUserHasNFT: (address: string) => Promise<any>;
+  getAllDefaultCharacters: (address: string) => Promise<any>;
+  transformCharacterData: (txn: any) => any;
+  mintCharacterNFT: (
+    characterId: number,
+    address: string,
+    txSubmitCallback: any,
+    txFailCallback: any,
+    txConfirmedCallback: any,
+    userRejectedCallback: any
+  ) => Promise<boolean>;
+  addCharacterNFTMintedEventListener: (callback) => boolean;
+  removeCharacterNFTMintedEventListener: (callback) => boolean;
+  getBigBoss: (address: string) => Promise<any>;
+  attackBoss: (
+    address: string,
+    txSubmitCallback: any,
+    txFailCallback: any,
+    txConfirmedCallback: any,
+    userRejectedCallback: any
+  ) => Promise<any>;
 
   // ** Class Statics **
   static Web3 = Web3;
@@ -28,69 +44,111 @@ class Web3ContextClass {
 
   // ** Constructor **
   constructor(web3Provider) {
-    // ** -------------------------------- **
-    // ** DEFINE YOUR STATE VARIABLES HERE **
-    // ** -------------------------------- **
 
     this.web3 = new Web3(web3Provider);
     this.cache = new Cache({ allTokens: 86400, ethUsdPrice: 300 });
 
     var self = this;
 
-    this.MyEpicGameContractAddress = "0x6f1008a1546400BBF825f320cb7587C2E3F1e221";
-    this.MyEpicGame = new this.web3.eth.Contract(
-      myEpicGameAbi.abi,
-      this.MyEpicGameContractAddress
+    this.RedwarContractAddress = "0x18dbFD4B6952C4f6412f8076C5e788cc980b4208";
+    this.Redwar = new this.web3.eth.Contract(
+      redwarAbi.abi,
+      this.RedwarContractAddress
     );
 
-    console.log("using deployed contract address:", this.MyEpicGameContractAddress)
-
-    this.checkIfUserHasNFT = async function () {
-      console.log("Default account:", this.web3.defaultAccount)
-      console.log("calling method...");
-      let txn = await this.MyEpicGame.methods.checkIfUserHasNFT().call();
-      console.log(txn)
+    this.transformCharacterData = function (txn) {
       if(txn.name) {
-        console.log("User has character NFT");
         return {
-          name: txn.name,
-          imageURI: txn.imageURI,
-          hp: txn.hp.toNumber(),
-          maxHp: txn.maxHp.toNumber(),
-          attackDamage: txn.attackDamage.toNumber(),
-        };
+            name: txn.name,
+            imageURI: txn.imageURI,
+            hp: parseFloat(txn.hp),
+            maxHp: parseFloat(txn.maxHp),
+            attackDamage: parseFloat(txn.attackDamage),
+          };
       }
     }
 
-
-    // ** --------------------- **
-    // ** DEFINE FUNCTIONS HERE **
-    // ** (functions are vars)  **
-    // ** --------------------- **
-
-    this.getEthUsdPriceBN = async function () {
-      return await self.cache.getOrUpdate("ethUsdPrice", async function () {
-        try {
-          return Web3.utils.toBN(
-            new Big(
-              (
-                await axios.get(
-                  "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=ethereum"
-                )
-              ).data.ethereum.usd
-            )
-              .mul(1e18)
-              .toFixed(0)
-          );
-        } catch (error) {
-          throw new Error("Error retrieving data from Coingecko API: " + error);
+    this.attackBoss = async function (
+      address: string,
+      txSubmitCallback: any,
+      txFailCallback: any,
+      txConfirmedCallback: any,
+      userRejectedCallback: any
+    ) {
+      console.log("in attack boss function...")
+      let attackBossMethod = this.Redwar.methods.attackBoss();
+      console.log("got attack boss method:", attackBossMethod);
+      let txn = await attackBossMethod.send({from: address}, (err, transactionHash) => {
+        if(err) {
+          console.log("TRANSACTION_FAILED:", err);
+          userRejectedCallback();
+          // return err;
+        } else {
+          console.log("TRANSACTION_SUBMITTED:", transactionHash);
+          txSubmitCallback();
+          // return txn;
         }
+      }).on('receipt', () => {
+        txConfirmedCallback('⚔️ Attacked Boss ⚔️')
+        // return txn;
       });
-    };
+      try {
+        return txn.status;
+      } catch (e) {
+        console.error("Failed to parse tx status for", txn);
+      }
+      return txn;
+    }
 
-    this.someAsyncFunction = async function (cacheTimeout = 86400) {
-      // ** example async function definition
-    };
+    this.getBigBoss = async function (address: string) {
+      let txn = await this.Redwar.methods.getBigBoss().call({from: address});
+      console.log("big boss data:", txn);
+      return this.transformCharacterData(txn);
+    }
+
+    this.checkIfUserHasNFT = async function (address: string) {
+      let txn = await this.Redwar.methods.checkIfUserHasNFT().call({from: address});
+      return this.transformCharacterData(txn);
+    }
+
+    this.getAllDefaultCharacters = async function (address: string) {
+      let txn = await this.Redwar.methods.getAllDefaultCharacters().call({from: address});
+      return txn.map((character) => this.transformCharacterData(character));
+    }
+
+    this.mintCharacterNFT = async function (characterId: number, address: string, txSubmitCallback: any, txFailCallback: any, txConfirmedCallback: any, userRejectedCallback: any) {
+      console.log("contract mint method:", this.Redwar.methods)
+      let mint_method = this.Redwar.methods.mintCharacterNFT(characterId);
+      console.log("got mint method:", mint_method);
+      const amountToSend = this.web3.utils.toWei("0.02", "ether");
+      console.log("Sending", amountToSend, "ethers...");
+      let txn = await mint_method.send({from: address, value: amountToSend}, (err, transactionHash) => {
+        if(err) {
+          console.log("TRANSACTION_FAILED:", err);
+          userRejectedCallback();
+          return;
+        } else {
+          console.log("TRANSACTION_SUBMITTED:", transactionHash);
+          txSubmitCallback();
+        }
+      }).on('receipt', txConfirmedCallback);
+      try {
+        return txn.status;
+      } catch (e) {
+        console.error("Failed to parse tx status for", txn);
+      }
+    }
+
+    this.addCharacterNFTMintedEventListener = function (callback) {
+      console.log(this.Redwar.events)
+      this.Redwar.events.CharacterNFTMinted().on('data', callback);
+      return true;
+    }
+
+    this.removeCharacterNFTMintedEventListener = function (callback) {
+      this.Redwar.events.CharacterNFTMinted().off('data', callback);
+      return true;
+    }
   }
 }
 
