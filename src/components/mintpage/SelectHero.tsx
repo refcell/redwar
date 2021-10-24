@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Heading,
-  Flex
+  Flex,
+  Text,
+  Image,
+  CircularProgress
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useTranslation } from "react-i18next";
@@ -13,7 +16,7 @@ import { onTxSubmitted, onTxFailed, userRejectedCallback, onTxConfirmed } from "
 const SelectHero = ({ characters, fetchNFTMetadata }) => {
   const { t } = useTranslation();
   const { web3Context, address } = useWeb3Context();
-
+  const [minting, setMinting] = useState(false);
   // ** Add a callback method that will fire when this event is received **
   // const onCharacterMint = async (sender, tokenId, characterIndex) => {
   //   console.log(
@@ -42,20 +45,44 @@ const SelectHero = ({ characters, fetchNFTMetadata }) => {
     const mint_result = await web3Context.mintCharacterNFT(
       characterId,
       address,
-      onTxSubmitted,
-      onTxFailed,
+      (msg) => {
+        setMinting(true);
+        onTxSubmitted();
+      },
+      () => {
+        setMinting(false);
+        onTxFailed()
+      },
       async () => {
+        setMinting(false);
         // ** Once our character NFT is minted we can fetch the metadata from our contract **
         // ** and set it in state to move onto the Arena **
         onTxConfirmed();
         await fetchNFTMetadata();
       },
-      userRejectedCallback
+      () => {
+        setMinting(false);
+        userRejectedCallback()
+      },
     );
   };
 
   return (
     <SelectHeroContainer>
+      {minting && (
+        <Flex flexDirection="column" alignItems="center" pt="50px" mb="50px">
+          <Flex>
+            <CircularProgress isIndeterminate color="green.300" />
+            <Text fontWeight="bold" fontSize="28px" paddingLeft="5px">{t("Minting In Progress...")}</Text>
+          </Flex>
+          <Image
+            width="400px"
+            pt="25px"
+            src="https://media2.giphy.com/media/61tYloUgq1eOk/giphy.gif?cid=ecf05e47dg95zbpabxhmhaksvoy8h526f96k4em0ndvx078s&rid=giphy.gif&ct=g"
+            alt="Minting loading indicator"
+          />
+        </Flex>
+      )}
       <Heading as="h2" pb="1em">{t("Mint Your Hero. Choose wisely.")}</Heading>
       <Flex
         flexWrap="wrap"
@@ -64,18 +91,16 @@ const SelectHero = ({ characters, fetchNFTMetadata }) => {
         {characters !== null ? characters.map((character, index) => (
           <CharacterItem key={character.name}>
             <CharacterItemImage src={character.imageURI} alt={character.name} />
+            <CharacterNameContainer>
+              <CharacterNameCode>
+                <CharacterNameP>{character.name}</CharacterNameP>
+              </CharacterNameCode>
+            </CharacterNameContainer>
             <CharacterStatsContainer>
               <CharacterStatsCode>
-                <CharacterItemP>{character.name}</CharacterItemP>
-              </CharacterStatsCode>
-              <CharacterStatsCode>
-                <CharacterItemP>Attack: {character.attackDamage}</CharacterItemP>
-              </CharacterStatsCode>
-              <CharacterStatsCode>
-                <CharacterItemP>HP: {character.hp}</CharacterItemP>
-              </CharacterStatsCode>
-              <CharacterStatsCode>
-                <CharacterItemP>Max HP: {character.maxHp}</CharacterItemP>
+                <CharacterStatsP>Attack: {character.attackDamage}</CharacterStatsP>
+                <CharacterStatsP>HP: {character.hp}</CharacterStatsP>
+                <CharacterStatsP>Max HP: {character.maxHp}</CharacterStatsP>
               </CharacterStatsCode>
             </CharacterStatsContainer>
             <CharacterMintButton
@@ -88,6 +113,7 @@ const SelectHero = ({ characters, fetchNFTMetadata }) => {
     </SelectHeroContainer>
   );
 };
+
 
 const SelectHeroContainer = styled.div`
   width: 100%;
@@ -113,14 +139,25 @@ const CharacterMintButton = styled.button`
   bottom: 0;
   width: 100%;
   height: 40px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
-  background-color: rgb(32, 129, 226);
+  background-color: var(--chakra-colors-blue-600);
   color: white;
   font-weight: bold;
   font-size: 16px;
+
+  &:hover {
+    background-color: var(--chakra-colors-blue-500);
+  }
+`;
+
+const CharacterNameContainer = styled(Flex)`
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: auto;
 `;
 
 const CharacterStatsContainer = styled(Flex)`
@@ -129,18 +166,35 @@ const CharacterStatsContainer = styled(Flex)`
   display: flex;
   flex-direction: column;
   width: auto;
+  margin-bottom: 40px;
+  padding-bottom: 10px;
 `;
 
-const CharacterStatsCode = styled.div`
-  background-color: #838383;
+const CharacterNameCode = styled.div`
+  background-color: var(--chakra-colors-red-700);
   border-radius: 5px;
   margin: 10px;
   width: auto;
 `;
 
-const CharacterItemP = styled.p`
+const CharacterNameP = styled.p`
   margin: 0;
   padding: 5px 10px 5px 10px;
+  font-weight: bold;
+  width: auto;
+`;
+
+const CharacterStatsCode = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0.8em 0 0.2em 0;
+`;
+
+const CharacterStatsP = styled.p`
+  padding: 0.5em;
+  background-color: var(--chakra-colors-gray-700);
+  border-radius: 5px;
   font-weight: bold;
   width: auto;
 `;

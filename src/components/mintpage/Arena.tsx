@@ -22,6 +22,8 @@ const Arena = ({ character, boss, attackState, runAttackAction }) => {
       alignItems="center"
       m="auto"
     >
+      <BattleHeading>Battle the Boss</BattleHeading>
+      <SubHeading>The conqueror receives all minting proceeds!</SubHeading>
       {boss ? (
         <Flex
           flexDirection="column"
@@ -49,7 +51,7 @@ const Arena = ({ character, boss, attackState, runAttackAction }) => {
           >
             <Heading fontWeight="bold" color="black" as="h2" p="5px 0 10px 0">🔥 {boss.name} 🔥</Heading>
             <ImageContent>
-              <BossImage src={boss.imageURI} alt={`Boss ${boss.name}`} />
+              <BossImage src={`https://cloudflare-ipfs.com/ipfs/${boss.imageURI}`} alt={`Boss ${boss.name}`} />
               <HealthBar className="healthBar">
                 <Progress colorScheme={
                     parseFloat(boss.hp) / parseFloat(boss.maxHp) < 0.30 ? "red" : (
@@ -67,18 +69,20 @@ const Arena = ({ character, boss, attackState, runAttackAction }) => {
             flexDirection="column"
             justifyContent="center"
           >
-            <AttackContainerButton onClick={runAttackAction}>
-              {`💥 Attack ${boss.name}`}
+            <AttackContainerButton disabled={character ? false : true} onClick={runAttackAction}>
+              { character ? `💥 Attack ${boss.name} 💥` : "Can't attack - mint a hero below first!"}
             </AttackContainerButton>
           </Flex>
         </Flex>
       ) : ('')}
 
+      {character && (<Heading as="h2" color="white !important" pb="1em">{t("Your Heros")}</Heading>)}
       {character && (
         <Flex // players-container
           justifyContent="space-around"
           width="100%"
           height="100%"
+          mb="50px"
         >
           <Flex // player-container
             justifyContent="space-around"
@@ -95,7 +99,7 @@ const Arena = ({ character, boss, attackState, runAttackAction }) => {
               <ImageContent>
                 <Text fontWeight="bold" color="black" fontSize="20px" p="5px 0 10px 5px">{character.name}</Text>
                 <PlayerImage
-                  src={character.imageURI}
+                  src={`https://cloudflare-ipfs.com/ipfs/${character.imageURI}`}
                   alt={`Character ${character.name}`}
                 />
                 <HealthBar className="healthBar">
@@ -117,6 +121,70 @@ const Arena = ({ character, boss, attackState, runAttackAction }) => {
     </Flex>
   );
 };
+
+const SubHeading = styled(Heading)`
+  font-family: Impact;
+  font-size: 22px !important;
+  font-weight: lighter;
+  line-height: 1.35;
+  letter-spacing: 0.028em;
+  text-align: center;
+  color: #fff;
+  padding-top: 0.5em;
+  padding-bottom: 1.5em;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (max-width: 900px) {
+    font-size: 22px;
+    max-width: 400px;
+  }
+  background-image: linear-gradient(
+    70deg,
+    var(--chakra-colors-blue-300) 15%,
+    var(--chakra-colors-green-600) 75%
+  );
+  background-clip: text;
+  color: transparent !important;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transform: scale(1, 1.4);
+  -webkit-transform: scale(1, 1.4); /* Safari and Chrome */
+  -moz-transform: scale(1, 1.4); /* Firefox */
+  -ms-transform: scale(1, 1.4); /* IE 9+ */
+  -o-transform: scale(1, 1.4); /* Opera */
+`;
+
+const BattleHeading = styled(Heading)`
+  margin: 0.5em;
+  font-family: Impact;
+  font-size: 60px !important;
+  line-height: 60px !important;
+  font-weight: 900;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: bold;
+  font-family: Impact;
+  background-image: linear-gradient(
+    70deg,
+    var(--chakra-colors-yellow-300) 15%,
+    var(--chakra-colors-yellow-600) 75%
+  );
+  text-transform: uppercase;
+  background-clip: text;
+  color: transparent !important;
+  text-align: center;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  display: inline-block;
+  transform: scale(1, 1.6);
+  -webkit-transform: scale(1, 1.6); /* Safari and Chrome */
+  -moz-transform: scale(1, 1.6); /* Firefox */
+  -ms-transform: scale(1, 1.6); /* IE 9+ */
+  -o-transform: scale(1, 1.6); /* Opera */
+`;
 
 const PlayerImage = styled.img`
   width: 250px;

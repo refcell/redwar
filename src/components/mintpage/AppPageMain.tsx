@@ -86,13 +86,10 @@ const AppPageMain = () => {
     <Flex minHeight="100px" height="auto" flexGrow={1} p={8}>
       <PageGroup>
         <MarginEightPix>
-          <SelectRow>
-          {character ? (
+          <Flex flexDirection="column" alignItems="center" justifyContent="space-between" pb="2em">
             <Arena character={character} boss={boss} attackState={attackState} runAttackAction={runAttackAction} />
-          ) : (
-            <SelectHero fetchNFTMetadata={fetchNFTMetadata} characters={characters} />
-          )}
-          </SelectRow>
+            <SelectHero character={character} fetchNFTMetadata={fetchNFTMetadata} characters={characters} />
+          </Flex>
         </MarginEightPix>
       </PageGroup>
     </Flex>

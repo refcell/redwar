@@ -15,7 +15,7 @@ import "hardhat/console.sol";
 import "./Base64.sol";
 
 // Our contract inherits from ERC721, which is the standard NFT contract!
-contract MyEpicGame is ERC721 {
+contract Redwall is ERC721 {
     struct CharacterAttributes {
         uint256 characterIndex;
         string name;
@@ -197,7 +197,7 @@ contract MyEpicGame is ERC721 {
                         charAttributes.name,
                         " -- NFT #: ",
                         Strings.toString(_tokenId),
-                        '", "description": "Welcome to the Redwood Metaverse", "image": "',
+                        '", "description": "Welcome to the Redwood Metaverse", "image": "ipfs://',
                         charAttributes.imageURI,
                         '", "attributes": [ { "trait_type": "Health Points", "value": ',
                         strHp,
