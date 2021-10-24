@@ -312,25 +312,20 @@ contract Redwar is ERC721 {
         string memory strAttackDamage = Strings.toString(charAttributes.attackDamage);
 
         string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name": "',
-                        charAttributes.name,
-                        " -- NFT #: ",
-                        Strings.toString(_tokenId),
-                        '", "description": "Welcome to the Redwood Metaverse", "image": "ipfs://',
-                        charAttributes.imageURI,
-                        '", "attributes": [ { "trait_type": "Health Points", "value": ',
-                        strHp,
-                        ', "max_value":',
-                        strMaxHp,
-                        '}, { "trait_type": "Attack Damage", "value": ',
-                        strAttackDamage,
-                        "} ]}"
-                    )
-                )
+          bytes(
+            string(
+              abi.encodePacked(
+                '{"name": "',
+                charAttributes.name,
+                ' -- NFT #: ',
+                Strings.toString(_tokenId),
+                '", "description": "An epic NFT", "image": "ipfs://',
+                charAttributes.imageURI,
+                '", "attributes": [ { "trait_type": "Health Points", "value": ',strHp,', "max_value":',strMaxHp,'}, { "trait_type": "Attack Damage", "value": ',
+                strAttackDamage,'} ]}'
+              )
             )
+          )
         );
 
         string memory output = string(
