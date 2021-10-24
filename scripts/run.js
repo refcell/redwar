@@ -1,5 +1,5 @@
 const main = async () => {
-  const gameContractFactory = await hre.ethers.getContractFactory('Redwall');
+  const gameContractFactory = await hre.ethers.getContractFactory('Redwar');
   // ** Creates a local network and deploys the contract
   // ** This network will be destroyed when this script is done executing
   const gameContract = await gameContractFactory.deploy(
@@ -34,7 +34,7 @@ const main = async () => {
       "QmbM9msGpM1mSosNFUUBoZun5sa4ESZXMA4pxk5k5BLye8", // Dark Claw
       "QmNtw3e59Qn3wQJ8ThrrxiMCSksCoYTKDLXvoHZXFoE6nk", // Methuselah
       "Qmf8cwMsVrY3w9PJkgPKauJ75xx4eNAaZQMnjkSR5dLmLy", // Friar Hugo
-      "QmPcHWYqJgNCHurj74LmaWKi4TsxhxB5oXFeotRhTD9YBk" // Abbott Mortimer
+      "QmPcHWYqJgNCHurj74LmaWKi4TsxhxB5oXFeotRhTD9YBk", // Abbott Mortimer
       "QmV7HHJBmRfkkjVkevh5vZJXbAm8PL6AsJ3JthYt34KW5i", // Fangburn
       "QmTFucw6dhpoGfmxN5HBL5iDcXHprbCZP7HyrimUMTGZGk" // Deadnose
     ],
@@ -78,8 +78,10 @@ const main = async () => {
     "Qmeih56pnVeuGzCpqYLWts1Gdv3Gmb29FX6CGTCgjzjqS7", // Boss Image
     // "https://i.ibb.co/6BK1jHL/Slager-The-Cruel.jpg", // Boss image
     // Boss imgbb link: https://ibb.co/TLQb94d
-    2000, // Boss hp
-    75 // Boss attack damage
+    300, // Boss hp
+    75, // Boss attack damage
+    10, // Maximum Honorary tokens
+    "0xf25e32C0f2928F198912A4F21008aF146Af8A05a"
   );
   await gameContract.deployed();
   console.log("Contract deployed to:", gameContract.address);
@@ -89,10 +91,10 @@ const main = async () => {
 
   // We only have three characters.
   // an NFT w/ the character at index 2 of our array.
-  txn = await gameContract.mintCharacterNFT(2);
+  txn = await gameContract.mintCharacterNFT(2, { value: hre.ethers.utils.parseEther("0.5") });
   await txn.wait();
   
-  txn = await gameContract.mintCharacterNFT(7);
+  txn = await gameContract.mintCharacterNFT(7, { value: hre.ethers.utils.parseEther("0.5") });
   await txn.wait();
 
   console.log("Checking if user has nft...");

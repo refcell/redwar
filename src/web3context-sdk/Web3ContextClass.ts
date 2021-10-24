@@ -5,7 +5,7 @@ import Big from "big.js";
 
 import { Cache } from ".";
 
-var myEpicGameAbi = require("." + "/abi/MyEpicGame.json");
+var redwarAbi = require("." + "/abi/Redwar.json");
 
 class Web3ContextClass {
   // ** Types **
@@ -47,10 +47,10 @@ class Web3ContextClass {
 
     var self = this;
 
-    this.MyEpicGameContractAddress = "0x6f1008a1546400BBF825f320cb7587C2E3F1e221";
-    this.MyEpicGame = new this.web3.eth.Contract(
-      myEpicGameAbi.abi,
-      this.MyEpicGameContractAddress
+    this.RedwarContractAddress = "0xB380eD608F2D5405BEADC0eCf0C0153E6612963e";
+    this.Redwar = new this.web3.eth.Contract(
+      redwarAbi.abi,
+      this.RedwarContractAddress
     );
 
     this.transformCharacterData = function (txn) {
@@ -73,7 +73,7 @@ class Web3ContextClass {
       userRejectedCallback: any
     ) {
       console.log("in attack boss function...")
-      let attackBossMethod = this.MyEpicGame.methods.attackBoss();
+      let attackBossMethod = this.Redwar.methods.attackBoss();
       console.log("got attack boss method:", attackBossMethod);
       let txn = await attackBossMethod.send({from: address}, (err, transactionHash) => {
         if(err) {
@@ -98,24 +98,24 @@ class Web3ContextClass {
     }
 
     this.getBigBoss = async function (address: string) {
-      let txn = await this.MyEpicGame.methods.getBigBoss().call({from: address});
+      let txn = await this.Redwar.methods.getBigBoss().call({from: address});
       console.log("big boss data:", txn);
       return this.transformCharacterData(txn);
     }
 
     this.checkIfUserHasNFT = async function (address: string) {
-      let txn = await this.MyEpicGame.methods.checkIfUserHasNFT().call({from: address});
+      let txn = await this.Redwar.methods.checkIfUserHasNFT().call({from: address});
       return this.transformCharacterData(txn);
     }
 
     this.getAllDefaultCharacters = async function (address: string) {
-      let txn = await this.MyEpicGame.methods.getAllDefaultCharacters().call({from: address});
+      let txn = await this.Redwar.methods.getAllDefaultCharacters().call({from: address});
       return txn.map((character) => this.transformCharacterData(character));
     }
 
     this.mintCharacterNFT = async function (characterId: number, address: string, txSubmitCallback: any, txFailCallback: any, txConfirmedCallback: any, userRejectedCallback: any) {
-      console.log("contract mint method:", this.MyEpicGame.methods)
-      let mint_method = this.MyEpicGame.methods.mintCharacterNFT(characterId);
+      console.log("contract mint method:", this.Redwar.methods)
+      let mint_method = this.Redwar.methods.mintCharacterNFT(characterId);
       console.log("got mint method:", mint_method);
       let txn = await mint_method.send({from: address}, (err, transactionHash) => {
         if(err) {
@@ -135,13 +135,13 @@ class Web3ContextClass {
     }
 
     this.addCharacterNFTMintedEventListener = function (callback) {
-      console.log(this.MyEpicGame.events)
-      this.MyEpicGame.events.CharacterNFTMinted().on('data', callback);
+      console.log(this.Redwar.events)
+      this.Redwar.events.CharacterNFTMinted().on('data', callback);
       return true;
     }
 
     this.removeCharacterNFTMintedEventListener = function (callback) {
-      this.MyEpicGame.events.CharacterNFTMinted().off('data', callback);
+      this.Redwar.events.CharacterNFTMinted().off('data', callback);
       return true;
     }
   }
