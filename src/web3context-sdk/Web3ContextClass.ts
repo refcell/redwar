@@ -8,17 +8,11 @@ import { Cache } from ".";
 var myEpicGameAbi = require("." + "/abi/MyEpicGame.json");
 
 class Web3ContextClass {
-  // ** ------------------------------ **
-  // ** TYPE YOUR STATE VARIABLES HERE **
-  // ** ------------------------------ **
-
   // ** Types **
   web3: Web3;
   cache: Cache;
-  getEthUsdPriceBN: () => Big;
-  someAsyncFunction: () => Promise<any>;
-  checkIfUserHasNFT: () => Promise<any>;
-  getAllDefaultCharacters: () => Promise<any>;
+  checkIfUserHasNFT: (address: string) => Promise<any>;
+  getAllDefaultCharacters: (address: string) => Promise<any>;
   mintCharacterNFT: (
     characterId: number,
     address: string,
@@ -29,6 +23,14 @@ class Web3ContextClass {
   ) => Promise<boolean>;
   addCharacterNFTMintedEventListener: (callback) => boolean;
   removeCharacterNFTMintedEventListener: (callback) => boolean;
+  getBigBoss: (address: string) => Promise<any>;
+  attackBoss: (
+    address: string,
+    txSubmitCallback: any,
+    txFailCallback: any,
+    txConfirmedCallback: any,
+    userRejectedCallback: any
+  ) => Promise<any>;
 
   // ** Class Statics **
   static Web3 = Web3;
@@ -39,9 +41,6 @@ class Web3ContextClass {
 
   // ** Constructor **
   constructor(web3Provider) {
-    // ** -------------------------------- **
-    // ** DEFINE YOUR STATE VARIABLES HERE **
-    // ** -------------------------------- **
 
     this.web3 = new Web3(web3Provider);
     this.cache = new Cache({ allTokens: 86400, ethUsdPrice: 300 });
@@ -64,6 +63,44 @@ class Web3ContextClass {
             attackDamage: parseFloat(txn.attackDamage),
           };
       }
+    }
+
+    this.attackBoss = async function (
+      address: string,
+      txSubmitCallback: any,
+      txFailCallback: any,
+      txConfirmedCallback: any,
+      userRejectedCallback: any
+    ) {
+      console.log("in attack boss function...")
+      let attackBossMethod = this.MyEpicGame.methods.attackBoss();
+      console.log("got attack boss method:", attackBossMethod);
+      let txn = await attackBossMethod.send({from: address}, (err, transactionHash) => {
+        if(err) {
+          console.log("TRANSACTION_FAILED:", err);
+          userRejectedCallback();
+          // return err;
+        } else {
+          console.log("TRANSACTION_SUBMITTED:", transactionHash);
+          txSubmitCallback();
+          // return txn;
+        }
+      }).on('receipt', () => {
+        txConfirmedCallback('⚔️ Attacked Boss ⚔️')
+        // return txn;
+      });
+      try {
+        return txn.status;
+      } catch (e) {
+        console.error("Failed to parse tx status for", txn);
+      }
+      return txn;
+    }
+
+    this.getBigBoss = async function (address: string) {
+      let txn = await this.MyEpicGame.methods.getBigBoss().call({from: address});
+      console.log("big boss data:", txn);
+      return this.transformCharacterData(txn);
     }
 
     this.checkIfUserHasNFT = async function (address: string) {
@@ -107,35 +144,6 @@ class Web3ContextClass {
       this.MyEpicGame.events.CharacterNFTMinted().off('data', callback);
       return true;
     }
-
-    // ** --------------------- **
-    // ** DEFINE FUNCTIONS HERE **
-    // ** (functions are vars)  **
-    // ** --------------------- **
-
-    this.getEthUsdPriceBN = async function () {
-      return await self.cache.getOrUpdate("ethUsdPrice", async function () {
-        try {
-          return Web3.utils.toBN(
-            new Big(
-              (
-                await axios.get(
-                  "https://api.coingecko.com/api/v3/simple/price?vs_currencies=usd&ids=ethereum"
-                )
-              ).data.ethereum.usd
-            )
-              .mul(1e18)
-              .toFixed(0)
-          );
-        } catch (error) {
-          throw new Error("Error retrieving data from Coingecko API: " + error);
-        }
-      });
-    };
-
-    this.someAsyncFunction = async function (cacheTimeout = 86400) {
-      // ** example async function definition
-    };
   }
 }
 

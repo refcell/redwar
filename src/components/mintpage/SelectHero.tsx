@@ -1,34 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
   Heading,
-  useDisclosure,
   Flex
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
-import { toast } from 'react-toastify';
 import { useTranslation } from "react-i18next";
 
-import { ConnectWallet, NoShadowButton } from "src/components";
+import { NoShadowButton } from "src/components";
 import { useWeb3Context } from "src/contexts/Web3Context";
+import { onTxSubmitted, onTxFailed, userRejectedCallback, onTxConfirmed } from "src/utils";
 
-const SelectHero = ({ character, setCharacterNFT }) => {
+const SelectHero = ({ characters, fetchNFTMetadata }) => {
   const { t } = useTranslation();
-  const { isAuthed, balance, web3Context, address, chainId } = useWeb3Context();
-  const [characters, setCharacters] = useState(null);
-  const [waitingForMint, setWaitingForMint] = useState(false);
-  const [mintingCharacter, setMintingCharacter] = useState(null);
-
-  // ** Refactored function to check if the user has an nft **
-  const fetchNFTMetadata = async () => {
-    const tempCharacter = await web3Context.checkIfUserHasNFT(address);
-    setCharacterNFT(tempCharacter)
-  };
-
-  // ** Refactored function to get the list of characters available to mint **
-  const fetchCharacters = async () => {
-    const characters = await web3Context.getAllDefaultCharacters(address);
-    setCharacters(characters)
-  }
+  const { web3Context, address } = useWeb3Context();
 
   // ** Add a callback method that will fire when this event is received **
   // const onCharacterMint = async (sender, tokenId, characterIndex) => {
@@ -53,100 +37,33 @@ const SelectHero = ({ character, setCharacterNFT }) => {
   //   }
   // };
 
-  // ** Callback for Transaction Submission **
-  const onTxSubmitted = async (e) => {
-    toast('🚀 Transaction Submitted 🚀 ', {
-      position: "bottom-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  };
-
-  // ** Callback for Transaction Confirmation **
-  const onTxConfirmed = async (e) => {
-    // ** Once our character NFT is minted we can fetch the metadata from our contract **
-    // ** and set it in state to move onto the Arena **
-    await fetchNFTMetadata();
-
-    // ** Then, let's toast **
-    toast.success(`💰 Successfully minted ${mintingCharacter ? mintingCharacter.name : 'UNKNOWN'} 💰`, {
-        position: "bottom-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-  };
-
-  // ** Callback for Transaction Failed **
-  const onTxFailed = async (e) => {
-    toast.error('❌ Transaction Failed ❌', {
-      position: "bottom-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  }
-
-  // ** User Rejection Callback **
-  const userRejectedCallback = async (e) => {
-    toast.warn('❌ Transaction Rejected ❌', {
-      position: "bottom-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-  }
-
-  // ** On address of chainId change, and authed, call hooks **
-  useEffect(() => {
-    if (isAuthed) {
-      // ** Add a callback listener for minting events **
-      // web3Context.addCharacterNFTMintedEventListener(onCharacterMint);
-      
-      // ** Fetch the NFT Metadata **
-      fetchNFTMetadata();
-
-      // ** Fetch the default Characters **
-      fetchCharacters();
-    }
-
-    // ** Remove on component dismount **
-    // return () => {
-    //   web3Context.removeCharacterNFTMintedEventListener(onCharacterMint);
-    // }
-  }, [address, chainId]);
-
   const mintCharacterNFTAction = (characterId) => async () => {
-    setMintingCharacter(characters[characterId]);
     const name_to_mint = characters[characterId].name;
     const mint_result = await web3Context.mintCharacterNFT(
       characterId,
       address,
       onTxSubmitted,
       onTxFailed,
-      onTxConfirmed,
+      async () => {
+        // ** Once our character NFT is minted we can fetch the metadata from our contract **
+        // ** and set it in state to move onto the Arena **
+        onTxConfirmed();
+        await fetchNFTMetadata();
+      },
       userRejectedCallback
     );
   };
 
   return (
     <SelectHeroContainer>
-      <Heading as="h2" pb="1em">Mint Your Hero. Choose wisely.</Heading>
+      <Heading as="h2" pb="1em">{t("Mint Your Hero. Choose wisely.")}</Heading>
       <Flex
         flexWrap="wrap"
         justifyContent="center"
       >
         {characters !== null ? characters.map((character, index) => (
           <CharacterItem key={character.name}>
+            <CharacterItemImage src={character.imageURI} alt={character.name} />
             <CharacterStatsContainer>
               <CharacterStatsCode>
                 <CharacterItemP>{character.name}</CharacterItemP>
@@ -161,7 +78,6 @@ const SelectHero = ({ character, setCharacterNFT }) => {
                 <CharacterItemP>Max HP: {character.maxHp}</CharacterItemP>
               </CharacterStatsCode>
             </CharacterStatsContainer>
-            <CharacterItemImage src={character.imageURI} alt={character.name} />
             <CharacterMintButton
               type="button"
               onClick={mintCharacterNFTAction(index)}
@@ -191,6 +107,7 @@ const CharacterItem = styled.div`
   margin: 1em;
 `;
 
+// NoShadowButton
 const CharacterMintButton = styled.button`
   position: absolute;
   bottom: 0;
@@ -207,7 +124,8 @@ const CharacterMintButton = styled.button`
 `;
 
 const CharacterStatsContainer = styled(Flex)`
-  position: absolute;
+  position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
   width: auto;

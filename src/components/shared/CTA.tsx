@@ -58,15 +58,7 @@ const CTA = ({ onOpen }) => {
             @{" "}
             <ChakraLink color="#4fa682" isExternal href="https://nascent.xyz">
               Nascent
-            </ChakraLink>{" "}
-            and{" "}
-            <ChakraLink
-              color="blue.500"
-              isExternal
-              href="https://github.com/permaetheus"
-            >
-              Permætheus
-            </ChakraLink>{" "}
+            </ChakraLink>
           </Text>
         </Flex>
         <Flex
