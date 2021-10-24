@@ -72,12 +72,20 @@ const main = async () => {
   await gameContract.deployed();
   console.log("Contract deployed to:", gameContract.address);
 
+
   let txn;
 
   // We only have three characters.
   // an NFT w/ the character at index 2 of our array.
   txn = await gameContract.mintCharacterNFT(2);
   await txn.wait();
+  
+  txn = await gameContract.mintCharacterNFT(7);
+  await txn.wait();
+
+  console.log("Checking if user has nft...");
+  let user_character = await gameContract.checkIfUserHasNFT();
+  console.log("Got user character:", user_character);
 
   // Get the value of the NFT's URI.
   let returnedTokenUri = await gameContract.tokenURI(1);

@@ -131,3 +131,19 @@ const exec = async () => {
 };
 
 exec();
+
+// 
+// 
+// npx hardhat verify --network rinkeby 0x6f1008a1546400BBF825f320cb7587C2E3F1e221 ["Matthias", "Vitch", "Cheesethief", "DarkClaw", "Methuselah", "Friar Hugo", "Abbott Mortimer", "Fangburn", "Deadnose" ], [ "https://i.ibb.co/yBXfFHv/Matthias.webp", "https://i.ibb.co/MSWtV8w/Vitch.webp", "https://i.ibb.co/vVPCVzW/Cheesethief.webp", "https://i.ibb.co/0hxQSyM/Darkclaw.webp", "https://i.ibb.co/MNT3g5H/Methuselah.webp", "https://i.ibb.co/k39HcNH/Friar-Hugo.webp", "https://i.ibb.co/N172k9T/Abbot-Mortimer.webp", "https://i.ibb.co/JHFyvyY/Fangburn.webp", "https://i.ibb.co/9HDFFWf/Deadnose.webp" ], [ 800, 300, 200, 400, 600, 300, 400, 700, 500 ], [ 200, 75, 90, 150, 125, 20, 55, 170, 120 ] "Slager The Cruel", "https://i.ibb.co/6BK1jHL/Slager-The-Cruel.jpg" 2000, 75
+
+// npx hardhat verify --network rinkeby 0x6f1008a1546400BBF825f320cb7587C2E3F1e221 "[\"Matthias\", \"Vitch\", \"Cheesethief\", \"DarkClaw\", \"Methuselah\", \"Friar Hugo\", \"Abbott Mortimer\", \"Fangburn\", \"Deadnose\"]" "[\"https://i.ibb.co/yBXfFHv/Matthias.webp\", \"https://i.ibb.co/MSWtV8w/Vitch.webp\", \"https://i.ibb.co/vVPCVzW/Cheesethief.webp\", \"https://i.ibb.co/0hxQSyM/Darkclaw.webp\", \"https://i.ibb.co/MNT3g5H/Methuselah.webp\", \"https://i.ibb.co/k39HcNH/Friar-Hugo.webp\", \"https://i.ibb.co/N172k9T/Abbot-Mortimer.webp\", \"https://i.ibb.co/JHFyvyY/Fangburn.webp\", \"https://i.ibb.co/9HDFFWf/Deadnose.webp\" ]" "[ 800, 300, 200, 400, 600, 300, 400, 700, 500 ]" "[ 200, 75, 90, 150, 125, 20, 55, 170, 120 ]" "\"Slager The Cruel\"" "\"https://i.ibb.co/6BK1jHL/Slager-The-Cruel.jpg\"" "2000" "75"
+
+// npx hardhat verify --network rinkeby 0x6f1008a1546400BBF825f320cb7587C2E3F1e221 
+// ["Matthias", "Vitch", "Cheesethief", "DarkClaw", "Methuselah", "Friar Hugo", "Abbott Mortimer", "Fangburn", "Deadnose"]
+// ["https://i.ibb.co/yBXfFHv/Matthias.webp", "https://i.ibb.co/MSWtV8w/Vitch.webp", "https://i.ibb.co/vVPCVzW/Cheesethief.webp", "https://i.ibb.co/0hxQSyM/Darkclaw.webp", "https://i.ibb.co/MNT3g5H/Methuselah.webp", "https://i.ibb.co/k39HcNH/Friar-Hugo.webp", "https://i.ibb.co/N172k9T/Abbot-Mortimer.webp", "https://i.ibb.co/JHFyvyY/Fangburn.webp", "https://i.ibb.co/9HDFFWf/Deadnose.webp" ]
+// [ 800, 300, 200, 400, 600, 300, 400, 700, 500 ] 
+// [ 200, 75, 90, 150, 125, 20, 55, 170, 120 ] 
+// "Slager The Cruel"
+// "https://i.ibb.co/6BK1jHL/Slager-The-Cruel.jpg"
+// 2000
+// 75

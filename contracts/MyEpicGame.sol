@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "hardhat/console.sol";
 
 // Helper we wrote to encode in Base64
-import "./libraries/Base64.sol";
+import "./Base64.sol";
 
 // Our contract inherits from ERC721, which is the standard NFT contract!
 contract MyEpicGame is ERC721 {
@@ -57,17 +57,13 @@ contract MyEpicGame is ERC721 {
         string[] memory characterImageURIs,
         uint256[] memory characterHp,
         uint256[] memory characterAttackDmg,
-        string memory bossName, // These new variables would be passed in via run.js or deploy.js.
+        string memory bossName,
         string memory bossImageURI,
         uint bossHp,
         uint bossAttackDamage
     )
-        // Below, you can also see I added some special identifier symbols for our NFT.
-        // This is the name and symbol for our token, ex Ethereum and ETH. I just call mine
-        // Heroes and HERO. Remember, an NFT is just a token!
         ERC721("Redwar", "RWAR")
     {
-      // Initialize the boss. Save it to our global "bigBoss" state variable.
       bigBoss = BigBoss({
         name: bossName,
         imageURI: bossImageURI,
@@ -76,32 +72,21 @@ contract MyEpicGame is ERC721 {
         attackDamage: bossAttackDamage
       });
 
-      console.log("Done initializing boss %s w/ HP %s, img %s", bigBoss.name, bigBoss.hp, bigBoss.imageURI);
+      for (uint256 i = 0; i < characterNames.length; i += 1) {
+          defaultCharacters.push(
+              CharacterAttributes({
+                  characterIndex: i,
+                  name: characterNames[i],
+                  imageURI: characterImageURIs[i],
+                  hp: characterHp[i],
+                  maxHp: characterHp[i],
+                  attackDamage: characterAttackDmg[i]
+              })
+          );
+          CharacterAttributes memory c = defaultCharacters[i];
+      }
 
-        for (uint256 i = 0; i < characterNames.length; i += 1) {
-            defaultCharacters.push(
-                CharacterAttributes({
-                    characterIndex: i,
-                    name: characterNames[i],
-                    imageURI: characterImageURIs[i],
-                    hp: characterHp[i],
-                    maxHp: characterHp[i],
-                    attackDamage: characterAttackDmg[i]
-                })
-            );
-
-            CharacterAttributes memory c = defaultCharacters[i];
-            console.log(
-                "Done initializing %s w/ HP %s, img %s",
-                c.name,
-                c.hp,
-                c.imageURI
-            );
-        }
-
-        // I increment tokenIds here so that my first NFT has an ID of 1.
-        // More on this in the lesson!
-        _tokenIds.increment();
+      _tokenIds.increment();
     }
 
     function attackBoss() public {
@@ -109,9 +94,6 @@ contract MyEpicGame is ERC721 {
       uint256 nftTokenIdOfPlayer = nftHolders[msg.sender];
       CharacterAttributes storage player = nftHolderAttributes[nftTokenIdOfPlayer];
 
-      console.log("\nPlayer w/ character %s about to attack. Has %s HP and %s AD", player.name, player.hp, player.attackDamage);
-      console.log("Boss %s has %s HP and %s AD", bigBoss.name, bigBoss.hp, bigBoss.attackDamage);
-      
       // Make sure the player has more than 0 HP.
       require (
         player.hp > 0,
@@ -137,9 +119,6 @@ contract MyEpicGame is ERC721 {
       } else {
         player.hp = player.hp - bigBoss.attackDamage;
       }
-      
-      // Console for ease.
-      console.log("Boss attacked player. New player hp: %s\n", player.hp);
 
       emit AttackComplete(bigBoss.hp, player.hp);
     }
@@ -147,7 +126,7 @@ contract MyEpicGame is ERC721 {
     function checkIfUserHasNFT() public view returns (CharacterAttributes memory) {
       // Get the tokenId of the user's character NFT
       uint256 userNftTokenId = nftHolders[msg.sender];
-      // If the user has a tokenId in the map, return thier character.
+      // If the user has a tokenId in the map, return their character.
       if (userNftTokenId > 0) {
         return nftHolderAttributes[userNftTokenId];
       }
@@ -166,7 +145,6 @@ contract MyEpicGame is ERC721 {
     function getBigBoss() public view returns (BigBoss memory) {
       return bigBoss;
     }
-
 
     // Users would be able to hit this function and get their NFT based on the
     // characterId they send in!
@@ -187,12 +165,6 @@ contract MyEpicGame is ERC721 {
             maxHp: defaultCharacters[_characterIndex].hp,
             attackDamage: defaultCharacters[_characterIndex].attackDamage
         });
-
-        console.log(
-            "Minted NFT w/ tokenId %s and characterIndex %s",
-            newItemId,
-            _characterIndex
-        );
 
         // Keep an easy way to see who owns what NFT.
         nftHolders[msg.sender] = newItemId;
@@ -215,9 +187,7 @@ contract MyEpicGame is ERC721 {
 
         string memory strHp = Strings.toString(charAttributes.hp);
         string memory strMaxHp = Strings.toString(charAttributes.maxHp);
-        string memory strAttackDamage = Strings.toString(
-            charAttributes.attackDamage
-        );
+        string memory strAttackDamage = Strings.toString(charAttributes.attackDamage);
 
         string memory json = Base64.encode(
             bytes(

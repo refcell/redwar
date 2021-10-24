@@ -17,7 +17,9 @@ class Web3ContextClass {
   cache: Cache;
   getEthUsdPriceBN: () => Big;
   someAsyncFunction: () => Promise<any>;
-  checkIfUserHasNFT: () => Promise<boolean>;
+  checkIfUserHasNFT: () => Promise<any>;
+  getAllDefaultCharacters: () => Promise<any>;
+  mintCharacterNFT: () => Promise<boolean>;
 
   // ** Class Statics **
   static Web3 = Web3;
@@ -43,23 +45,34 @@ class Web3ContextClass {
       this.MyEpicGameContractAddress
     );
 
-    console.log("using deployed contract address:", this.MyEpicGameContractAddress)
-
-    this.checkIfUserHasNFT = async function () {
-      console.log("Default account:", this.web3.defaultAccount)
-      console.log("calling method...");
-      let txn = await this.MyEpicGame.methods.checkIfUserHasNFT().call();
-      console.log(txn)
+    this.transformCharacterData = function (txn) {
+      console.log("transforming character data:", txn)
       if(txn.name) {
-        console.log("User has character NFT");
         return {
-          name: txn.name,
-          imageURI: txn.imageURI,
-          hp: txn.hp.toNumber(),
-          maxHp: txn.maxHp.toNumber(),
-          attackDamage: txn.attackDamage.toNumber(),
-        };
+            name: txn.name,
+            imageURI: txn.imageURI,
+            hp: parseFloat(txn.hp),
+            maxHp: parseFloat(txn.maxHp),
+            attackDamage: parseFloat(txn.attackDamage),
+          };
       }
+    }
+
+    this.checkIfUserHasNFT = async function (address: string) {
+      let txn = await this.MyEpicGame.methods.checkIfUserHasNFT().call({from: address});
+      return this.transformCharacterData(txn);
+    }
+
+    this.getAllDefaultCharacters = async function (address: string) {
+      let txn = await this.MyEpicGame.methods.getAllDefaultCharacters().call({from: address});
+      console.log("Got characters:", txn);
+      return txn.map((character) => this.transformCharacterData(character));
+    }
+
+    this.mintCharacterNFT = async function (characterId: number, address: string) {
+      let txn = await this.MyEpicGame.methods.mintCharacterNFT(characterId).send({from: address});
+      console.log("Got mintCharacterNFT:", txn);
+      return true;
     }
 
 

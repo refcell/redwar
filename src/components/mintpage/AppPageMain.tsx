@@ -32,7 +32,7 @@ const OpenBidRow = styled.div`
 const MarginEightPix = styled.div`
   max-width: 800px;
   width: 100%;
-  margin: 2em auto auto auto;
+  margin: 0 auto auto auto;
 `;
 
 const AppPageMain = () => {
