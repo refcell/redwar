@@ -120,7 +120,7 @@ class Web3ContextClass {
       console.log("contract mint method:", this.Redwar.methods)
       let mint_method = this.Redwar.methods.mintCharacterNFT(characterId);
       console.log("got mint method:", mint_method);
-      const amountToSend = this.web3.utils.toWei(0.02, "ether");
+      const amountToSend = this.web3.utils.toWei("0.02", "ether");
       console.log("Sending", amountToSend, "ethers...");
       let txn = await mint_method.send({from: address, value: amountToSend}, (err, transactionHash) => {
         if(err) {
