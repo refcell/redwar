@@ -90,7 +90,7 @@ const SelectHero = ({ character, characters, fetchNFTMetadata }) => {
       >
         {characters !== null ? characters.map((character, index) => (
           <CharacterItem key={character.name}>
-            <CharacterItemImage src={character.imageURI} alt={character.name} />
+            <CharacterItemImage src={`https://cloudflare-ipfs.com/ipfs/${character.imageURI}`} alt={character.name} />
             <CharacterNameContainer>
               <CharacterNameCode>
                 <CharacterNameP>{character.name}</CharacterNameP>
