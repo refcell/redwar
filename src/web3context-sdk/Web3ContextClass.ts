@@ -11,8 +11,11 @@ class Web3ContextClass {
   // ** Types **
   web3: Web3;
   cache: Cache;
+  RedwarContractAddress: string;
+  Redwar: any;
   checkIfUserHasNFT: (address: string) => Promise<any>;
   getAllDefaultCharacters: (address: string) => Promise<any>;
+  transformCharacterData: (txn: any) => any;
   mintCharacterNFT: (
     characterId: number,
     address: string,

@@ -13,7 +13,7 @@ import { NoShadowButton } from "src/components";
 import { useWeb3Context } from "src/contexts/Web3Context";
 import { onTxSubmitted, onTxFailed, userRejectedCallback, onTxConfirmed } from "src/utils";
 
-const SelectHero = ({ characters, fetchNFTMetadata }) => {
+const SelectHero = ({ character, characters, fetchNFTMetadata }) => {
   const { t } = useTranslation();
   const { web3Context, address } = useWeb3Context();
   const [minting, setMinting] = useState(false);
