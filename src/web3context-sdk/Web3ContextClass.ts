@@ -19,7 +19,16 @@ class Web3ContextClass {
   someAsyncFunction: () => Promise<any>;
   checkIfUserHasNFT: () => Promise<any>;
   getAllDefaultCharacters: () => Promise<any>;
-  mintCharacterNFT: () => Promise<boolean>;
+  mintCharacterNFT: (
+    characterId: number,
+    address: string,
+    txSubmitCallback: any,
+    txFailCallback: any,
+    txConfirmedCallback: any,
+    userRejectedCallback: any
+  ) => Promise<boolean>;
+  addCharacterNFTMintedEventListener: (callback) => boolean;
+  removeCharacterNFTMintedEventListener: (callback) => boolean;
 
   // ** Class Statics **
   static Web3 = Web3;
@@ -46,7 +55,6 @@ class Web3ContextClass {
     );
 
     this.transformCharacterData = function (txn) {
-      console.log("transforming character data:", txn)
       if(txn.name) {
         return {
             name: txn.name,
@@ -65,16 +73,40 @@ class Web3ContextClass {
 
     this.getAllDefaultCharacters = async function (address: string) {
       let txn = await this.MyEpicGame.methods.getAllDefaultCharacters().call({from: address});
-      console.log("Got characters:", txn);
       return txn.map((character) => this.transformCharacterData(character));
     }
 
-    this.mintCharacterNFT = async function (characterId: number, address: string) {
-      let txn = await this.MyEpicGame.methods.mintCharacterNFT(characterId).send({from: address});
-      console.log("Got mintCharacterNFT:", txn);
+    this.mintCharacterNFT = async function (characterId: number, address: string, txSubmitCallback: any, txFailCallback: any, txConfirmedCallback: any, userRejectedCallback: any) {
+      console.log("contract mint method:", this.MyEpicGame.methods)
+      let mint_method = this.MyEpicGame.methods.mintCharacterNFT(characterId);
+      console.log("got mint method:", mint_method);
+      let txn = await mint_method.send({from: address}, (err, transactionHash) => {
+        if(err) {
+          console.log("TRANSACTION_FAILED:", err);
+          userRejectedCallback();
+          return;
+        } else {
+          console.log("TRANSACTION_SUBMITTED:", transactionHash);
+          txSubmitCallback();
+        }
+      }).on('receipt', txConfirmedCallback);
+      try {
+        return txn.status;
+      } catch (e) {
+        console.error("Failed to parse tx status for", txn);
+      }
+    }
+
+    this.addCharacterNFTMintedEventListener = function (callback) {
+      console.log(this.MyEpicGame.events)
+      this.MyEpicGame.events.CharacterNFTMinted().on('data', callback);
       return true;
     }
 
+    this.removeCharacterNFTMintedEventListener = function (callback) {
+      this.MyEpicGame.events.CharacterNFTMinted().off('data', callback);
+      return true;
+    }
 
     // ** --------------------- **
     // ** DEFINE FUNCTIONS HERE **

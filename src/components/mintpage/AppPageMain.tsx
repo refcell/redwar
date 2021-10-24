@@ -30,7 +30,7 @@ const OpenBidRow = styled.div`
 `;
 
 const MarginEightPix = styled.div`
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto auto auto;
 `;
@@ -43,7 +43,7 @@ const AppPageMain = () => {
       <PageGroup>
         <MarginEightPix>
           <SelectRow>
-            <SelectHero setCharacterNFT={setCharacterNFT} />
+            <SelectHero character={character} setCharacterNFT={setCharacterNFT} />
           </SelectRow>
           {/* <OpenBidRow>
             <OpenBidsFrame />
