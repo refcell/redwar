@@ -43,7 +43,7 @@ const AppPageMain = () => {
       <PageGroup>
         <MarginEightPix>
           <SelectRow>
-            <SelectHero />
+            <SelectHero setCharacterNFT={setCharacterNFT} />
           </SelectRow>
           {/* <OpenBidRow>
             <OpenBidsFrame />

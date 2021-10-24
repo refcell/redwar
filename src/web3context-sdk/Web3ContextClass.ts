@@ -37,13 +37,19 @@ class Web3ContextClass {
 
     var self = this;
 
+    this.MyEpicGameContractAddress = "0x6f1008a1546400BBF825f320cb7587C2E3F1e221";
     this.MyEpicGame = new this.web3.eth.Contract(
-      myEpicGameAbi,
-      process.env.DEPLOYED_RINKEBY_CONTRACT_ADDRESS
+      myEpicGameAbi.abi,
+      this.MyEpicGameContractAddress
     );
 
-    this.checkIfUserHasNFT = async () => {
-      let txn = await this.MyEpicGame.checkIfUserHasNFT();
+    console.log("using deployed contract address:", this.MyEpicGameContractAddress)
+
+    this.checkIfUserHasNFT = async function () {
+      console.log("Default account:", this.web3.defaultAccount)
+      console.log("calling method...");
+      let txn = await this.MyEpicGame.methods.checkIfUserHasNFT().call();
+      console.log(txn)
       if(txn.name) {
         console.log("User has character NFT");
         return {

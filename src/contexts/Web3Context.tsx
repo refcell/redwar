@@ -115,7 +115,7 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
         //   return;
         // }
 
-        if (netId !== 1 || currChainId !== 1) {
+        if (netId !== 4 || currChainId !== 4) {
           // ** Prevent Fast Reentrancy
           setTimeout(() => {
             toast({
@@ -155,7 +155,7 @@ const Web3ContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if(chainChange) {
       setChainChange(false);
-      if(address !== EmptyAddress && chainId === 1) {
+      if(address !== EmptyAddress && chainId === 4) {
         // ** Prevent Fast Reentrancy
         setTimeout(() => {
           toast({

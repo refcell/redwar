@@ -146,9 +146,11 @@ const SelectHero = ({ setCharacterNFT }) => {
 
   // ** Check if user has an NFT on param change **
   useEffect(() => {
+    console.log(web3Context)
     const fetchNFTMetadata = async () => {
       console.log('Checking for Character NFT on address:', address);
       const character = await web3Context.checkIfUserHasNFT();
+      console.log("Got character:", character)
       setCharacterNFT(character)
     };
 
